@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/sso-services/service-aliyun/service-aliyun.iml" filepath="$PROJECT_DIR$/sso-services/service-aliyun/service-aliyun.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sso-common/sso-common.iml" filepath="$PROJECT_DIR$/sso-common/sso-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sso-server/sso-server.iml" filepath="$PROJECT_DIR$/sso-server/sso-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sso-services/sso-services.iml" filepath="$PROJECT_DIR$/sso-services/sso-services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tw-sso.iml" filepath="$PROJECT_DIR$/tw-sso.iml" />
+    </modules>
+  </component>
+</project>

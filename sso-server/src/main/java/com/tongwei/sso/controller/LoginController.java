@@ -31,15 +31,15 @@ import com.tongwei.sso.util.AuthService;
 @ConfigurationProperties(prefix = "sso.sys")
 public class LoginController extends BaseController {
 
-    private String successUrl;
+    private String successUrl;//成功的url
     
-    private String setCookieUrl;
+    private String setCookieUrl;//cookie的url
 
     @Autowired
-    AuthService authService;
+    AuthService authService; //权限相关接口
 
     @Autowired
-    RememberMeRule rememberMeRule;
+    RememberMeRule rememberMeRule; //记住用户接口
 
     @PostMapping("/login")
     @ResponseBody
@@ -50,20 +50,20 @@ public class LoginController extends BaseController {
         }
         User user = null;
         try {
-            user = authService.login(loginName, password);
+            user = authService.login(loginName, password);//登录
         } catch (AuthenticationExcption e) {
             return ResultUtil.doFailure(e.getMessage());
         }
 
-        if ("null".equals(successUrl) || StringUtils.isBlank(successUrl)) {
+        if ("null".equals(successUrl) || StringUtils.isBlank(successUrl)) {//如果传入的succesurl为空,则取默认的url
             successUrl = this.successUrl;
         }
 
-        Map<String, String> data = new HashMap<>(2);
+        Map<String, String> data = new HashMap<>(2); //初始化两个容量的hashmap
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
+        Cookie[] cookies = request.getCookies(); //得到请求的cookie
+        if (cookies != null) {                                      //cookie不为空,则遍历数组,找出name和value
+            for (Cookie cookie : cookies) {                 //如果name为AUTHUSER,则将其存入前面的hashmap
                 String name = cookie.getName();
                 String value = cookie.getValue();
                 if ("AUTHUSER".equalsIgnoreCase(name)) {
