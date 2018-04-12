@@ -28,12 +28,13 @@ public abstract class AbstractRememberMeRule implements RememberMeRule {
 
     private static Logger logger = LoggerFactory.getLogger(AbstractRememberMeRule.class);
 
+    //返回随机key+userid+时间差
     @Override
     public String generateValue(HttpServletRequest request, RememberMeType type, Integer userId) {
         String key = null;
-        if (RememberMeType.HOST == type) {
+        if (RememberMeType.HOST == type) { //如果是HOST则据此生成秘钥
             key = MD5Util.md5(request.getRemoteHost());
-        } else if (RememberMeType.USER_AGENT == type) {
+        } else if (RememberMeType.USER_AGENT == type) { //如果是agent则取得请求头字段,生成秘钥
             String value = request.getHeader("user-agent");
             if (value == null) {
                 logger.error("rememberme is not successful, cause by user-agent is null");
@@ -41,17 +42,20 @@ public abstract class AbstractRememberMeRule implements RememberMeRule {
             }
             key = MD5Util.md5(value);
         } else {
-            key = UUID.randomUUID().toString();
+            key = UUID.randomUUID().toString();//否则随机生成秘钥
         }
-        long cur = System.currentTimeMillis();
-        String value = key + "_" + userId + "_" + cur;
+        //至此,无论如何key都有值
+        long cur = System.currentTimeMillis();//取得与格林威治时间的毫秒差值
+        String value = key + "_" + userId + "_" + cur; //随机key+userid+时间差
         try {
-            return AESUtil.encodeToHex(value);
+            return AESUtil.encodeToHex(value);//返回转换的16进制字符串
         } catch (Exception e) {
             logger.error("AUTHUSER encode ex:", e);
         }
-        return null;
+        return null;//以上操作失败,返回空
     }
+
+
 
     @Override
     public boolean validate(HttpServletRequest request, HttpServletResponse response, FilterChain chain,

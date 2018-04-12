@@ -72,7 +72,7 @@ public class LoginController extends BaseController {
             }
         }
 
-        // 记住我
+        // 记住我,rememberMe传入on则
         if ("on".equals(rememberMe)) {
             RememberMeType re = RememberMeType.USER_AGENT;
             if ("HOST".equalsIgnoreCase(rememberMeType)) {
@@ -80,21 +80,22 @@ public class LoginController extends BaseController {
             }
             if ("NONE".equalsIgnoreCase(rememberMeType)) {
                 re = RememberMeType.NONE;
-            }
+            }////根据用户id,用户类型生成一个 随机key+userid+时间差 的字符串
             String generateValue = rememberMeRule.generateValue(request, re, user.getId());
             if (generateValue != null) {
-                data.put("AUTHUSER", generateValue);
+                data.put("AUTHUSER", generateValue);//字符串不为空,则放入map
             }
         }
         data.put("setCookieUrl", setCookieUrl);
         data.put("successUrl", successUrl);
         data.put("SESSION", request.getSession().getId());
-        return ResultUtil.doSuccess(data);
+        //最后将向客户端返回successUrl  cookie的url  session的Id 用户的角色和值
+        return ResultUtil.doSuccess(data); //返回200的号码 和数据
     }
 
     // 注销登录
     @GetMapping(value = "/loginout")
-    public String loginout() {// COOKIE策略注销
+    public String loginout() {// COOKIE策略注销,将AUTHUSER值置空,重定向到根
         authService.loginout();
         Cookie cookie = new Cookie("AUTHUSER", "");
         response.addCookie(cookie);

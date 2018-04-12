@@ -74,12 +74,12 @@ public class AuthService {
      * @throws Exception
      */
     public User login(String loginName, String password) throws Exception {
-        password = PasswordUtil.encodePwd(password);
-        User user = userMapper.login(loginName, password);
-        if (user == null) {
+        password = PasswordUtil.encodePwd(password);//将密码编码成16进制
+        User user = userMapper.login(loginName, password);//电话,名字 和密码登录 ,查出用户信息
+        if (user == null) { //user为空,抛出异常
             throw new AuthenticationExcption("用户名/密码不正确!");
         }
-        HttpServletRequest request = SessionUtil.getRequest();
+        HttpServletRequest request = SessionUtil.getRequest();//取得请求信息
         SessionUtil.setUser(user);
         if (user.getForbidden()) {
             // 禁止登录日志
